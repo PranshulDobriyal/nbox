@@ -24,7 +24,7 @@ Documentation
 from .on_ml import  *
 from .on_operators import *
 
-ALL_PROTOCOLS = [NBXModel, TensorflowModel, TorchModel, SklearnModel, ONNXRtModel]
+ALL_PROTOCOLS = [NBXModel, TensorflowModel, TorchModel, SklearnModel, ONNXRtModel, FlaxModel]
 
 def register_new_on_ml_protocol(proto: FrameworkAgnosticProtocol):
   ALL_PROTOCOLS.append(proto)

@@ -3,6 +3,7 @@ from nbox.utils import get_image
 import numpy as np
 from torch import randn
 import torch
+import time
 
 def pre_fn(x):
   from torchvision.transforms import functional as trfn
@@ -79,14 +80,18 @@ def test_resnet():
     assert torch.equal(first_out, second_out)
     return second_out.topk(10)
 
-def br():
-    print("\n")
-    print("#"*50, "\n")
+def run_fn(name, fn):
+    def br():
+        print("#"*70, "\n")
+    start_time = time.time()
+    out = fn()
+    end_time = time.time()
+    br()
+    print(f"{name}: \n {out}\n\nThe Function took {end_time-start_time} seconds to run")
+    br()
 
 #Test Feedforward - 
-br()
-print("FeedForward: \n", test_feedforward())
+run_fn("FeedForward", test_feedforward)
 
 #Test Resnet -
-br()
-print("Resnet: \n", test_resnet())
+run_fn("Resnet", test_resnet)

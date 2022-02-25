@@ -6,6 +6,7 @@ import nbox
 import numpy as np
 from nbox.framework.on_ml import SklearnInput
 from nbox.model import Model
+import time
 
 
 def br():
@@ -76,11 +77,19 @@ def test_random_forest():
   assert np.array_equal(first_out, second_out)
   return second_out[:5]
 
-#Test Feedforward
-br()
-print(test_feedforward())
 
-#Test Random Forest
-br()
-print(test_random_forest())
+def run_fn(name, fn):
+    def br():
+        print("#"*70, "\n")
+    start_time = time.time()
+    out = fn()
+    end_time = time.time()
+    br()
+    print(f"{name}: \n {out}\n\nThe Function took {end_time-start_time} seconds to run")
+    br()
 
+#Test Feedforward - 
+run_fn("FeedForward", test_feedforward)
+
+#Test Random Forest -
+run_fn("Random Forest", test_random_forest)

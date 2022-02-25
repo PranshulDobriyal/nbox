@@ -1,14 +1,12 @@
-from nbox import load, Model
-from nbox.utils import get_image
-from transformers import GPT2Tokenizer, TFGPT2LMHeadModel
+from nbox import Model
+from transformers import TFGPT2LMHeadModel
 import tensorflow as tf
-from tensorflow import keras
-from keras import layers
 from tensorflow.keras.applications.resnet50 import decode_predictions
 from keras.models import Sequential
 from keras import Input
 from keras.layers import Dense 
 import numpy as np
+import time
 
 def br():
   print("*"*50, "\n")
@@ -45,7 +43,7 @@ def test_resnet():
   assert np.all(first_out == second_out)
   return decode_predictions(second_out.numpy(), top = 5)
 
-def feed_forward():
+def test_feedforward():
   model = Sequential(name="Model-with-One-Input") 
   model.add(Input(shape=(1,), name='Input-Layer')) 
   model.add(Dense(2, activation='softplus', name='Hidden-Layer'))
@@ -111,15 +109,23 @@ def test_tiny_gpt():
   return second_out
 
 
+def run_fn(name, fn):
+    def br():
+        print("#"*70, "\n")
+    start_time = time.time()
+    out = fn()
+    end_time = time.time()
+    br()
+    print(f"{name}: \n {out}\n\nThe Function took {end_time-start_time} seconds to run")
+    br()
 
-br()
-#Test FeedForward
-print("Output for Feed Forward Network:- \n", feed_forward())
-br()
+#Test Feedforward - 
+run_fn("FeedForward", test_feedforward)
 
-# print("Output for tiny GPT-2 : \n", test_tiny_gpt())
-# br()
+#Test Resnet -
+run_fn("Resnet", test_resnet)
 
-#Test Resnet
-br()
-print("Output for Resnet50 : \n", test_resnet())
+#Test Tiny-GPT
+#run_fn("Tiny GPT-2", test_tiny_gpt)
+
+
